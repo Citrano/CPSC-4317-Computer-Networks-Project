@@ -2,3 +2,6 @@
 #This Programming Script will demonstrate the simulation of a wireless NS2.
 
 set ns [new Simulator]
+
+#Node ***Place the needed number of nodes below. Unsure if still 60 or not.
+set node_number 
