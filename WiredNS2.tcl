@@ -29,16 +29,19 @@ proc finish {} {
 
 #Nodes (wants 60 nodes from parameters)
 set node_number 60
-for {set i 0} { $i<$node_number} {incr i} {
+for {set i 0} {$i<$node_number} {incr i} {
     set n($i) [$ns node]
 }
 
 #Link
-$ns duplex-link $n0 $n1 1Mb 10ms Droptail
+for {set i 0} {$i < node_number} {incr i} {
+    $ns duplex-link $n($i) $n([expr ($i+1)%7]) 1Mb 10ms DropTail
+}
+
 
 #UDP agent attachment
 set udp0 [new Agent/UDP]
-$ns attach-agent $n0 $udp0
+$ns attach-agent $n(0) $udp0
 
 #CBR Traffic UDP attachment
 set cbr0 [new Application/Traffic/CBR]
@@ -48,7 +51,7 @@ $cbr0 attach-agent $udp0
 
 #Null agent
 set null0 [new Agent/Null]
-$ns attach-agent $n1 $null0
+$ns attach-agent $n(3) $null0
 
 #Connect source with sink
 $ns connect $udp0 $null0
