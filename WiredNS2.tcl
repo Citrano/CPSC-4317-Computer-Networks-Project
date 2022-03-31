@@ -28,8 +28,10 @@ proc finish {} {
 }
 
 #Nodes (wants 60 nodes from parameters)
-set n0 [$ns node]
-set n1 [$ns node]
+set node_number 60
+for {set i 0} { $i<$node_number} {incr i} {
+    set n($i) [$ns node]
+}
 
 #Link
 $ns duplex-link $n0 $n1 1Mb 10ms Droptail
