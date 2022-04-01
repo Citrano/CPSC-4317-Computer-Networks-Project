@@ -22,9 +22,6 @@ proc finish {} {
 #Nodes (wants 60 nodes from parameters)
 set node_number 60
 
-#This is how we connect nodes BETWEEN link and Drop place something link node like $n0 $n1 1Mb 100ms
-$ns duplex-link DropTail
-
 #UDP agent attachment
 set udp0 [new Agent/UDP]
 $ns attach-agent $n(0) $udp0
