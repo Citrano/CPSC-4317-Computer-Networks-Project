@@ -35,7 +35,7 @@ for {set i 0} {$i<$node_number} {incr i} {
 
 #Link
 for {set i 0} {$i < node_number} {incr i} {
-    $ns duplex-link $n($i) $n([expr ($i+1)%7]) 1Mb 10ms DropTail
+    set lan [$ns newLan "$n($i) $n([expr ($i+1)%7])" 1Mb 10ms LL Queue/DropTail MAC/Csma/Cd]
 }
 
 
@@ -56,7 +56,7 @@ $ns attach-agent $n(3) $null0
 #Connect source with sink
 $ns connect $udp0 $null0
 
-#Schedule Procedures - finish at 100 seconds (wants 100 seconds from parameters)
+#Schedule Procedures
 $ns at 0.5 "$cbr0 start"
 $ns at 4.5 "$cbr0 stop"
 
