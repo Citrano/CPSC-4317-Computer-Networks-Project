@@ -4,6 +4,10 @@
 #Create simulator object
 set ns [new Simulator]
 
+#Define different color for data flows.
+$ns color 1 Blue
+$ns color 2 Red
+
 #Open nam trace file
 set nf [open out.nam w]
 $ns namtrace-all $nf
