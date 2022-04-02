@@ -1,5 +1,10 @@
 #Kaden Carter, Cody Citrano, Alejandro Figueroa - CPSC 4317 Computer Networks - Dr. Bo Sun
 #This Programming Script will demonstrate the simulation of a wireless NS2.
+#PARAMETERS
+#Nodes: 60
+#Frame size: 1,000B
+#Traffic: CBR over UDP
+#Run Time: 100 seconds
 
 #Create simulator object
 set ns [new Simulator]
