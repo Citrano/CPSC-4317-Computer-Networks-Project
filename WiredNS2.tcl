@@ -9,6 +9,8 @@
 #AT THE MOMENT THIS IS BASICALLY A COPY OF "example1b.tcl" THAT IS PROVIDED IN THE VIRTUAL MACHINE
 #USING AS A BASE FOR THE WIRED SIMULATOR. WIRELESS LOOKS COMPLICATED.
 
+LanRouter set debug_ 0
+
 #Create simulator object
 set ns [new Simulator]
 
