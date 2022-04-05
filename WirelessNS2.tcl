@@ -47,7 +47,7 @@ for {set i 0} {$i < $node_number} {incr i} {
 }
 
 #Placement of nodes
-for {set i 0} {$i < node_number} {incr i} {
+for {set i 0} {$i < $node_number} {incr i} {
     #unsure as of now as to what goes here
     #40 means the inital placement.
     #$ns initial-node-placement $node_($i) 40
