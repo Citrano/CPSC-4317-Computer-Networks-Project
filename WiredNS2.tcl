@@ -28,10 +28,12 @@ $ns trace-all $tf
 
 #Finish procedure
 proc finish {} {
-    global ns nf
+    global ns nf tf
     $ns flush-trace
-    #Close the trace
+    #Close the nam trace
     close $nf
+    #Close the trace
+    close $tf
     #Execute nam on the trace file
     exec nam out.nam &
     exit 0
@@ -44,7 +46,7 @@ for {set i 0} {$i<$node_number} {incr i} {
 }
 
 #Link
-for {set i 0} {$i < node_number} {incr i} {
+for {set i 0} {$i < $node_number} {incr i} {
     set lan [$ns newLan "$n($i) $n([expr ($i+1)%7])" 1Mb 10ms LL Queue/DropTail MAC/Csma/Cd]
 }
 
