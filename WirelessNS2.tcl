@@ -18,15 +18,15 @@ set nf [open outwl.nam w]
 $ns namtrace-all $nf
 
 #Open tr trace file TESTING
-set namtrace [open outwl.tr]
-$ns namtrace-all-wireless $namtrace $val(x) $val(y)
+#set namtrace [open outwl.tr]
+#$ns namtrace-all-wireless $namtrace $val(x) $val(y)
 
-set prop [new $val(prop)]
-set topo [new $val Topography]
+#set prop [new $val(prop)]
+#set topo [new $val Topography]
 
-$topo load-flatgrid $val(x) $val(y)
+#$topo load-flatgrid $val(x) $val(y)
 
-create-god $val(nn)
+#create-god $val(nn)
 
 #Finish procedure
 proc finish {} {
@@ -41,6 +41,15 @@ proc finish {} {
 
 #Nodes (wants 60 nodes from parameters)
 set node_number 60
+for {set i 0} {$i < $node_number} {incr i} {
+    set n($i) [$ns node]
+    #$node_($i) random-montion 0
+}
+
+#Placement of nodes
+for {set i 0} {$i < node_number} {incr i} {
+    #unsure as of now as to what goes here
+}
 
 #UDP agent attachment
 set udp0 [new Agent/UDP]
