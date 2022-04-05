@@ -14,8 +14,19 @@ $ns color 1 Blue
 $ns color 2 Red
 
 #Open nam trace file
-set nf [open out.nam w]
+set nf [open outwl.nam w]
 $ns namtrace-all $nf
+
+#Open tr trace file TESTING
+set namtrace [open outwl.tr]
+$ns namtrace-all-wireless $namtrace $val(x) $val(y)
+
+set prop [new $val(prop)]
+set topo [new $val Topography]
+
+$topo load-flatgrid $val(x) $val(y)
+
+create-god $val(nn)
 
 #Finish procedure
 proc finish {} {
