@@ -14,18 +14,20 @@ $ns color 1 Blue
 $ns color 2 Red
 
 #Open nam trace file
-set nf [open outwl.nam w]
+set nf [open wireless.nam w]
 $ns namtrace-all $nf
 
 #Open tr trace file TESTING
-#set namtrace [open outwl.tr]
+#set namtrace [open wireless.tr]
 #$ns namtrace-all-wireless $namtrace $val(x) $val(y)
 
 #set prop [new $val(prop)]
-#set topo [new $val Topography]
 
+#Creates the topography
+#set topo [new $val Topography]
 #$topo load-flatgrid $val(x) $val(y)
 
+#Create GOD, which means general operations director
 #create-god $val(nn)
 
 #Finish procedure
