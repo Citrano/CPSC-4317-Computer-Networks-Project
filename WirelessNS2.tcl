@@ -25,7 +25,7 @@ set ns_         [new Simulator]
 
 #Open nam trace file
 set nf          [open Wireless.nam w]
-$ns namtrace-all $nf
+$ns_ namtrace-all $nf
 
 #Open tr trace file
 set tracefd     [open Wireless.tr w]
