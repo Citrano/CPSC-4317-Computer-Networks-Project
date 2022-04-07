@@ -20,9 +20,6 @@ set val(ifqlen)         50                          ;#Max Packet in ifq
 set val(nn)             2                           ;#Number of Mobilenodes
 set val(rp)             DSDV                        ;#Routing Protocol
 
-#Creates a variable for the needed number of nodes.
-set node_number 60
-
 #Initialize Global Variables
 set ns_         [new Simulator]
 
@@ -37,6 +34,9 @@ $ns_ trace-all $tracefd
 #Define different color for data flows.
 $ns_ color 1 Blue
 $ns_ color 2 Red
+
+#Simple Wireless
+#------------------------------------------------------------------------------------------------------
 
 #Setting up the topography object
 set topography  [new Topography]
@@ -92,7 +92,6 @@ $ns_ 100.0 "$node_(1) setdest 490.0 480.0 15.0"
 
 #Setup traffic flow between nodes
 #TCP connections between node_(0) and node_(1)
-
 set tcp {new Agent/TCP}
 $tcp set class_ 2
 set sink [new Agent/TCPSink]
@@ -109,6 +108,43 @@ for{set i 0}{$i < $val(nn)}{incr i} {
 }
 $ns_ at 150.0 "stop"
 $ns_ at 150.01 "puts \"NS EXITING...\" ; $ns_ halt"
+
+#------------------------------------------------------------------------------------------------------
+#End of simple Wireless
+
+#Creates a variable for the needed number of nodes (wants 60 nodes from parameters).
+set node_number 60
+
+#
+for{set i 0} {$i < $node_number} {incr i} {
+    set n($i) [$ns node]
+}
+
+#Defining a transport agent for sending and attaching transport agent to receiver node.
+set udp0 [new Agent/UDP]
+$ns_ attach-agent $n(0) $udp0
+
+#Defining a transport agent for receiving and attaching transport agent to receiver node.
+set null0 [new Agent/Null]
+$ns_ attach-agent $n(3) $null0
+
+#Connecting sending and receiving transport agents.
+$ns_ connect $udp0 $null0
+
+#Defining Application instance and attaching transport agent to application agent.
+set cbr0 [new Application/Traffic/CBR]
+$cbr0 attach-agent $udp0
+
+#Packet size in bytes and interval in seconds definition.
+$cbr0 set packetSize_ 1000
+$cbr0 set interval_ 0.005
+
+#Schedule Procedures.
+$ns_ at 0.5 "$cbr0 start"
+$ns_ at 4.5 "$cbr0 stop"
+
+#Call finish procedure - finish at 100 seconds (wants 100 seconds from parameters).
+$ns_ at 100.0 "finish"
 
 #Finish procedure
 proc finish {} {
