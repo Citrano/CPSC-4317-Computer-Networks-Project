@@ -21,25 +21,22 @@ set val(nn)             60                          ;#Number of Mobilenodes
 set val(rp)             AODV                        ;#Routing Protocol
 
 #Initialize Global Variables
-set ns_         [new Simulator]
+set ns         [new Simulator]
 
 #Open nam trace file
-set nf          [open Wireless.nam w]
-$ns_ namtrace-all $nf
+set nf          [open Out.nam w]
+$ns namtrace-all $nf
 
 #Open tr trace file
-set tracefd     [open Wireless.tr w]
-$ns_ trace-all $tracefd
+set tr          [open Wireless.tr w]
+$ns trace-all $tr
 
 #Define different color for data flows.
-$ns_ color 1 Blue
-$ns_ color 2 Red
-
-#Simple Wireless
-#------------------------------------------------------------------------------------------------------
+$ns color 1 Blue
+$ns color 2 Red
 
 #Setting up the topography object
-set topography  [new Topography]
+set topo        [new Topography]
 
 $topo load_flatgrid 500 500
 
@@ -51,7 +48,7 @@ create-god $val(nn)
 
 #Configure Nodes:
 
-$ns_ node-config -adhocRouting $val(rp) \
+$ns node-config -adhocRouting $val(rp) \
                 -llType $val(ll) \
                 -macType $val(mac) \
                 -ifqType $val(ifq) \
@@ -66,68 +63,25 @@ $ns_ node-config -adhocRouting $val(rp) \
                 -macTrace ON \
                 -movementTrace OFF \
 
-for{set i 0} {$i < $val(nn)} {incr i} {
-    set node_($i) [$ns_ node]
-    $node_($i) random-motion 0                      ;#disable random motion
-}
-
-#Provide initial (X, Ym for now Z = 0) co-ordinates for mobilenodes.
-
-$node_(0) set X_ 5.0
-$node_(0) set Y_ 2.0
-$node_(0) set Z_ 0.0
-
-$node_(1) set X_ 390.0
-$node_(1) set Y_ 385.0
-$node_(1) set Z_ 0.0
-
-#Now produce some simple node movements
-#Node_(1) starts to move towards node(0)
-
-$ns_ at 50.0 "$node_(1) setdest 25.0 20.0 15.0"
-$ns_ at 10.0 "$node_(0) setdest 20.0 18.0 1.0"
-
-#Node_(1) then starts to move away from node_(0).
-$ns_ 100.0 "$node_(1) setdest 490.0 480.0 15.0"
-
-#Setup traffic flow between nodes
-#TCP connections between node_(0) and node_(1)
-set tcp {new Agent/TCP}
-$tcp set class_ 2
-set sink [new Agent/TCPSink]
-$ns_ attach-agent $node_(0) $tcp
-$ns_ attach-agent $node_(1) $sink
-$ns_ connect $tcp $sink
-set ftp [new Application/FTP]
-$ftp attach-agent $tcp
-$ns_ at 10.0 "$ftp start"
-
-#Tell nodes when the simulation ends
-for{set i 0}{$i < $val(nn)}{incr i} {
-    $ns_ at 150.0 "$node_($i) reset";
-}
-$ns_ at 150.0 "stop"
-$ns_ at 150.01 "puts \"NS EXITING...\" ; $ns_ halt"
-
-#------------------------------------------------------------------------------------------------------
-#End of simple Wireless
-
-#Creates a variable for the needed number of nodes (wants 60 nodes from parameters).
-for{set i 0} {$i < $val(nn)} {incr i} {
+for {set i 0} {$i < $val(nn)} {incr i} {
     set n($i) [$ns node]
-    $node_($i) random-motion 0                      ;#disable random motion
+    $n($i) random-motion 0                      ;#disable random motion
+}
+
+for {set i 0} {$i < $val(nn)} {incr i} {
+    $ns initial_node_pos $n($i) 20
 }
 
 #Defining a transport agent for sending and attaching transport agent to receiver node.
 set udp0 [new Agent/UDP]
-$ns_ attach-agent $n(0) $udp0
+$ns attach-agent $n(0) $udp0
 
 #Defining a transport agent for receiving and attaching transport agent to receiver node.
 set null0 [new Agent/Null]
-$ns_ attach-agent $n(3) $null0
+$ns attach-agent $n(3) $null0
 
 #Connecting sending and receiving transport agents.
-$ns_ connect $udp0 $null0
+$ns connect $udp0 $null0
 
 #Defining Application instance and attaching transport agent to application agent.
 set cbr0 [new Application/Traffic/CBR]
@@ -138,26 +92,26 @@ $cbr0 set packetSize_ 1000
 $cbr0 set interval_ 0.005
 
 #Schedule Procedures.
-$ns_ at 0.5 "$cbr0 start"
-$ns_ at 4.5 "$cbr0 stop"
+$ns at 0.5 "$cbr0 start"
+$ns at 4.5 "$cbr0 stop"
 
 #Call finish procedure - finish at 100 seconds (wants 100 seconds from parameters).
-$ns_ at 100.0 "finish"
+$ns at 100.0 "finish"
 
 #Finish procedure
 proc finish {} {
-    global ns_ nf tracefd
-    $ns_ flush-trace
+    global ns nf tr
+    $ns flush-trace
 
     #Closes the nam trace
     close $nf
 
     #Closes the trace
-    close $tracefd
+    close $tr
 
-    exec nam Wireless.nam &
+    exec nam Out.nam &
     exit 0
 }
 
 puts "Starting Simulation..."
-$ns_ run
+$ns run
