@@ -17,7 +17,7 @@ set val(ifq)            Queue/DropTail/PriQueue     ;#Interface Queue Type
 set val(ll)             LL                          ;#Link Layer Type
 set val(ant)            Antenna/OmniAntenna         ;#Antenna Model
 set val(ifqlen)         50                          ;#Max Packet in ifq
-set val(nn)             2                           ;#Number of Mobilenodes
+set val(nn)             60                          ;#Number of Mobilenodes
 set val(rp)             AODV                        ;#Routing Protocol
 
 #Initialize Global Variables
@@ -51,7 +51,7 @@ create-god $val(nn)
 
 #Configure Nodes:
 
-$ns node-config -adhocRouting $val(rp) \
+$ns_ node-config -adhocRouting $val(rp) \
                 -llType $val(ll) \
                 -macType $val(mac) \
                 -ifqType $val(ifq) \
@@ -113,11 +113,9 @@ $ns_ at 150.01 "puts \"NS EXITING...\" ; $ns_ halt"
 #End of simple Wireless
 
 #Creates a variable for the needed number of nodes (wants 60 nodes from parameters).
-set node_number 60
-
-#
-for{set i 0} {$i < $node_number} {incr i} {
+for{set i 0} {$i < $val(nn)} {incr i} {
     set n($i) [$ns node]
+    $node_($i) random-motion 0                      ;#disable random motion
 }
 
 #Defining a transport agent for sending and attaching transport agent to receiver node.
