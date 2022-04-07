@@ -18,7 +18,7 @@ set val(ll)             LL                          ;#Link Layer Type
 set val(ant)            Antenna/OmniAntenna         ;#Antenna Model
 set val(ifqlen)         50                          ;#Max Packet in ifq
 set val(nn)             2                           ;#Number of Mobilenodes
-set val(rp)             DSDV                        ;#Routing Protocol
+set val(rp)             AODV                        ;#Routing Protocol
 
 #Initialize Global Variables
 set ns_         [new Simulator]
