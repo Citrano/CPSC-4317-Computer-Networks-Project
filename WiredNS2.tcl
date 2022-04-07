@@ -50,7 +50,6 @@ for {set i 0} {$i < $node_number} {incr i} {
     set lan [$ns newLan "$n($i) $n([expr ($i+1)%7])" 1Mb 10ms LL Queue/DropTail MAC/Csma/Cd]
 }
 
-
 #UDP agent attachment
 set udp0 [new Agent/UDP]
 $ns attach-agent $n(0) $udp0
