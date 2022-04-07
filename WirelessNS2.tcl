@@ -6,84 +6,107 @@
 #Traffic: CBR over UDP
 #Run Time: 100 seconds
 
-#Create simulator object
-set ns [new Simulator]
+#PARAMETERS
+#Nodes: 60
+#Frame size: 1,000B
+#Traffic: CBR over UDP
+#Run Time: 100 seconds
 
-#Define different color for data flows.
-$ns color 1 Blue
-$ns color 2 Red
+#------------------
+#Defining variables
+#------------------
+set val(chan)           Channel/WirelessChannel     ;#Channel type
+set val(prop)           Propagation/TwoRayGround    ;#Radio-propagation model
+set val(netif)          Phy/WirelessPhy             ;#Network Inferface Type
+set val(mac)            Mac/802_11                  ;#MAC Type
+set val(ifq)            Queue/DropTail/PriQueue     ;#Interface Queue Type
+set val(ll)             LL                          ;#Link Layer Type
+set val(ant)            Antenna/OmniAntenna         ;#Antenna Model
+set val(ifqlen)         50                          ;#Max Packet in ifq
+set val(nn)             2                           ;#Number of Mobilenodes
+set val(rp)             DSDV                        ;#Routing Protocol
 
-#Open nam trace file
-set nf [open wireless.nam w]
-$ns namtrace-all $nf
+#Initialize Global Variables
+set ns_         [new Simulator]
+set tracefd     [open Wireless.tr w]
+$ns_ trace-all $tracefd
 
-#Open tr trace file TESTING
-#set namtrace [open wireless.tr]
-#$ns namtrace-all-wireless $namtrace $val(x) $val(y)
+#Setting up the topography object
+set topography  [new Topography]
 
-#set prop [new $val(prop)]
+$topo load_flatgrid 500 500
 
-#Creates the topography
-#set topo [new $val Topography]
-#$topo load-flatgrid $val(x) $val(y)
+#Creating God Variable
+create-god $val(nn)
 
-#Create GOD, which means general operations director
-#create-god $val(nn)
+#Create a specified number of mobilenodes [$val(nn)] and "attach" them to the channel.
+#Here two nodes are created: node(0) and node(1).
 
-#Finish procedure
-proc finish {} {
-    global ns nf
-    $ns flush-trace
-    #Close the trace
-    close $nf
-    #Execute nam on the trace file
-    exec nam out.nam &
-    exit 0
+#Configure Nodes:
+
+$ns node-config -adhocRouting $val(rp) \
+                -llType $val(ll) \
+                -macType $val(mac) \
+                -ifqType $val(ifq) \
+                -ifqLen $val(ifqlen) \
+                -antType $val(ant) \
+                -propType $val(prop) \
+                -phyType $val(netif) \
+                -channelType $val(chan) \
+                -topoInstance $topo \
+                -agentTrace ON \
+                -routerTrace ON \
+                -macTrace ON \
+                -movementTrace OFF \
+
+for{set i 0} {$i < $val(nn)} {incr i} {
+    set node_($i) [$ns_ node]
+    $node_($i) random-motion 0                      ;#disable random motion
 }
 
-#Nodes (wants 60 nodes from parameters)
-set node_number 60
-for {set i 0} {$i < $node_number} {incr i} {
-    set n($i) [$ns node]
-    #$node_($i) random-montion 0
+#Provide initial (X, Ym for now Z = 0) co-ordinates for mobilenodes.
+
+$node_(0) set X_ 5.0
+$node_(0) set Y_ 2.0
+$node_(0) set Z_ 0.0
+
+$node_(1) set X_ 390.0
+$node_(1) set Y_ 385.0
+$node_(1) set Z_ 0.0
+
+#Now produce some simple node movements
+#Node_(1) starts to move towards node(0)
+
+$ns_ at 50.0 "$node_(1) setdest 25.0 20.0 15.0"
+$ns_ at 10.0 "$node_(0) setdest 20.0 18.0 1.0"
+
+#Node_(1) then starts to move away from node_(0).
+$ns_ 100.0 "$node_(1) setdest 490.0 480.0 15.0"
+
+#Setup traffic flow between nodes
+#TCP connections between node_(0) and node_(1)
+
+set tcp {new Agent/TCP}
+$tcp set class_ 2
+set sink [new Agent/TCPSink]
+$ns_ attach-agent $node_(0) $tcp
+$ns_ attach-agent $node_(1) $sink
+$ns_ connect $tcp $sink
+set ftp [new Application/FTP]
+$ftp attach-agent $tcp
+$ns_ at 10.0 "$ftp start"
+
+#Tell nodes when the simulation ends
+for{set i 0}{$i < $val(nn)}{incr i} {
+    $ns_ at 150.0 "$node_($i) reset";
+}
+$ns_ at 150.0 "stop"
+$ns_ at 150.01 "puts \"NS EXITING...\" ; $ns_ halt"
+proc stop {} {
+    global ns_ tracefd
+    $ns_ flush-trace
+    close $tracefd
 }
 
-#Placement of nodes
-for {set i 0} {$i < $node_number} {incr i} {
-    #unsure as of now as to what goes here
-    #40 means the inital placement.
-    #$ns initial-node-placement $node_($i) 40
-}
-
-#UDP agent attachment
-set udp0 [new Agent/UDP]
-$ns attach-agent $n(0) $udp0
-
-#CBR Traffic UDP attachment
-set cbr0 [new Application/Traffic/CBR]
-$cbr0 set packetSize_ 1000
-$cbr0 set interval_ 0.005
-$cbr0 attach-agent $udp0
-
-#Null agent
-set null0 [new Agent/Null]
-$ns attach-agent $n(3) $null0
-
-#Connect source with sink
-$ns connect $udp0 $null0
-
-#Schedule Procedures - finish at 100 seconds (wants 100 seconds from parameters)
-$ns at 0.5 "$cbr0 start"
-$ns at 4.5 "$cbr0 stop"
-
-#Call finish procedure - finish at 100 seconds (wants 100 seconds from parameters)
-$ns at 100.0 "finish"
-
-#Runs the simulation
-$ns run
-
-
-
-
-
-#test test
+puts "Starting Simulation..."
+$ns_ run
