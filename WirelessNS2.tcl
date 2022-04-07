@@ -20,10 +20,23 @@ set val(ifqlen)         50                          ;#Max Packet in ifq
 set val(nn)             2                           ;#Number of Mobilenodes
 set val(rp)             DSDV                        ;#Routing Protocol
 
+#Creates a variable for the needed number of nodes.
+set node_number 60
+
 #Initialize Global Variables
 set ns_         [new Simulator]
+
+#Open nam trace file
+set nf          [open Wireless.nam w]
+$ns namtrace-all $nf
+
+#Open tr trace file
 set tracefd     [open Wireless.tr w]
 $ns_ trace-all $tracefd
+
+#Define different color for data flows.
+$ns_ color 1 Blue
+$ns_ color 2 Red
 
 #Setting up the topography object
 set topography  [new Topography]
@@ -96,10 +109,20 @@ for{set i 0}{$i < $val(nn)}{incr i} {
 }
 $ns_ at 150.0 "stop"
 $ns_ at 150.01 "puts \"NS EXITING...\" ; $ns_ halt"
-proc stop {} {
-    global ns_ tracefd
+
+#Finish procedure
+proc finish {} {
+    global ns_ nf tracefd
     $ns_ flush-trace
+
+    #Closes the nam trace
+    close $nf
+
+    #Closes the trace
     close $tracefd
+
+    exec nam Wireless.nam &
+    exit 0
 }
 
 puts "Starting Simulation..."
