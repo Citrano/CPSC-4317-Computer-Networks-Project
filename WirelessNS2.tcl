@@ -6,12 +6,6 @@
 #Traffic: CBR over UDP
 #Run Time: 100 seconds
 
-#PARAMETERS
-#Nodes: 60
-#Frame size: 1,000B
-#Traffic: CBR over UDP
-#Run Time: 100 seconds
-
 #------------------
 #Defining variables
 #------------------
