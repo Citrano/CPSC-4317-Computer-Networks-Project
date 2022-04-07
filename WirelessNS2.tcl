@@ -81,3 +81,9 @@ $ns at 100.0 "finish"
 
 #Runs the simulation
 $ns run
+
+
+
+
+
+#test test
