@@ -57,6 +57,14 @@ for {set i 0} {$i < $val(nn)} {incr i} {
     $ns initial_node_pos $n($i) 30
 }
 
+proc stop {} {
+    global ns nf tf
+    $ns flush-trace
+    close $nf
+    close $tf
+    exec nam out.nam &
+}
+
 proc destination {} {
     global ns val n
     set time 1.0
@@ -74,13 +82,5 @@ $ns at $val(stop) "$ns nam-end-wireless $val(stop)"
 $ns at $val(stop) "stop"
 
 $ns at 10.5 "puts \"end simulation\"; $ns halt"
-
-proc stop {} {
-    global ns nf tf
-    $ns flush-trace
-    close $nf
-    close $tf
-    exec nam out.nam &
-}
 
 $ns run
