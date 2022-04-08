@@ -21,6 +21,15 @@ $ns namtrace-all $nf
 set tf [open out.tr w]
 $ns trace-all $tf
 
+proc finish {} {
+    global ns nf tf
+    $ns flush-trace
+    close $nf
+    close $tf
+    exec nam out.nam &
+    exit 0
+}
+
 # topography
 set topo [new Topography]
 $topo load_flatgrid 500 500
