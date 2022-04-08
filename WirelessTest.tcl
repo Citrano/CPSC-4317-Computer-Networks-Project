@@ -53,7 +53,7 @@ for {set i 0} {$i < $val(nn)} {incr i} {
     set n($i) [$ns node]
 }
 
-for {set i 0} {$i < val(nn)} {incr i} {
+for {set i 0} {$i < $val(nn)} {incr i} {
     $ns initial_node_pos $n($i) 30
 }
 
