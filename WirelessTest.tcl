@@ -1,4 +1,4 @@
-# define options
+#Define variables
 
 set val(chan)       Channel/WirelessChannel
 set val(prop)       Propagation/TwoRayGround
@@ -16,17 +16,18 @@ set val(stop)       100
 set val(traffic)    cbr
 set val(traffic)    udp
 
-# main program
-
+#Create simulator object
 set ns [new Simulator]
 
-set nf [open out.nam w]
+#Open nam trace file
+set nf [open Wireless.nam w]
 $ns namtrace-all-wireless $nf $val(x) $val(y)
 
-set tf [open out.tr w]
+#Open tr trace file
+set tf [open Out.tr w]
 $ns trace-all $tf
 
-# topography
+#Topography
 set topo [new Topography]
 $topo load_flatgrid $val(x) $val(y)
 
@@ -49,22 +50,26 @@ $ns node-config -adhocRouting $val(rp) \
                 -macTrace ON \
                 -movementTrace ON
 
+#Nodes (wants 60 nodes from parameters)
 for {set i 0} {$i < $val(nn)} {incr i} {
     set n($i) [$ns node]
 }
 
+#Define initial position 
 for {set i 0} {$i < $val(nn)} {incr i} {
     $ns initial_node_pos $n($i) 30
 }
 
+#Stop procedure
 proc stop {} {
     global ns nf tf
     $ns flush-trace
     close $nf
     close $tf
-    exec nam out.nam &
+    exec nam Wireless.nam &
 }
 
+#Random moving positions
 proc destination {} {
     global ns val n
     set time 1.0
