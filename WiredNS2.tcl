@@ -14,10 +14,6 @@ LanRouter set debug_ 0
 #Create simulator object
 set ns [new Simulator]
 
-#Define different color for data flows.
-$ns color 1 Blue
-$ns color 2 Red
-
 #Open nam trace file
 set nf [open out.nam w]
 $ns namtrace-all $nf
@@ -40,7 +36,7 @@ proc finish {} {
 }
 
 #Nodes (wants 60 nodes from parameters)
-set node_number 60
+set node_number 5
 for {set i 0} {$i<$node_number} {incr i} {
     set n($i) [$ns node]
 }
@@ -72,7 +68,7 @@ $ns at 0.5 "$cbr0 start"
 $ns at 4.5 "$cbr0 stop"
 
 #Call finish procedure - finish at 100 seconds (wants 100 seconds from parameters)
-$ns at 100.0 "finish"
+$ns at 10.0 "finish"
 
 #Runs the simulation
 $ns run
