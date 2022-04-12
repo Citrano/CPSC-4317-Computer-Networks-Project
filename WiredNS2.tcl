@@ -36,7 +36,7 @@ proc finish {} {
 }
 
 #Nodes (wants 60 nodes from parameters)
-set node_number 5
+set node_number 60
 for {set i 0} {$i<$node_number} {incr i} {
     set n($i) [$ns node]
 }
@@ -58,7 +58,7 @@ $cbr0 attach-agent $udp0
 
 #Null agent
 set null0 [new Agent/Null]
-$ns attach-agent $n(4) $null0
+$ns attach-agent $n(59) $null0
 
 #Connect source with sink
 $ns connect $udp0 $null0
@@ -68,7 +68,7 @@ $ns at 0.5 "$cbr0 start"
 $ns at 4.5 "$cbr0 stop"
 
 #Call finish procedure - finish at 100 seconds (wants 100 seconds from parameters)
-$ns at 10.0 "finish"
+$ns at 100.0 "finish"
 
 #Runs the simulation
 $ns run
