@@ -14,10 +14,6 @@ LanRouter set debug_ 0
 #Create simulator object
 set ns [new Simulator]
 
-#Define different color for data flows.
-$ns color 1 Blue
-$ns color 2 Red
-
 #Open nam trace file
 set nf [open out.nam w]
 $ns namtrace-all $nf
@@ -62,7 +58,7 @@ $cbr0 attach-agent $udp0
 
 #Null agent
 set null0 [new Agent/Null]
-$ns attach-agent $n(3) $null0
+$ns attach-agent $n(59) $null0
 
 #Connect source with sink
 $ns connect $udp0 $null0
