@@ -23,6 +23,5 @@ BEGIN{
 END{
     latency=ftime-stime
     throughput=(fsize*8)/latency
-    printf("\n Latency : %f",latency)
     printf("\N Throughput : %f",throughput)
 }
