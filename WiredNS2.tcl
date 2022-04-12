@@ -58,7 +58,7 @@ $cbr0 attach-agent $udp0
 
 #Null agent
 set null0 [new Agent/Null]
-$ns attach-agent $n(3) $null0
+$ns attach-agent $n(4) $null0
 
 #Connect source with sink
 $ns connect $udp0 $null0
