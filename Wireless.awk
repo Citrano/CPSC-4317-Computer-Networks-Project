@@ -10,9 +10,9 @@ BEGIN {
 }
 
 {
-    if($1=="r"&&$4==59){
+    if($1=="r"&&$4==59) {
         fsize+=$6
-        if(flag==0){
+        if(flag==0) {
             stime=$2
             flag=1
         }
