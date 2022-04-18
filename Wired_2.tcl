@@ -53,7 +53,7 @@ set cbr1 [new Application/Traffic/CBR]
 $cbr1 set packetSize_ 1000
 $cbr1 set interval_ 0.005
 $cbr1 attach-agent $udp1
-set null0 [new Agent/Null]
+set null1 [new Agent/Null]
 $ns attach-agent $n(14) $null1
 $ns connect $udp1 $null1
 
