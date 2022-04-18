@@ -107,6 +107,7 @@ proc destination {} {
     for {set i 0} {$i < $val(nn)} {incr i} {
         set xx [expr rand()*400]
         set yy [expr rand()*250]
+        
         $ns at $now "$n($i) setdest $xx $yy 500.0
     }
 
