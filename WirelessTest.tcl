@@ -103,11 +103,11 @@ proc destination {} {
     set time 1.0
 
     set now [$ns now]
-    
+
     for {set i 0} {$i < $val(nn)} {incr i} {
         set xx [expr rand()*400]
         set yy [expr rand()*250]
-        $ns at $now "$n($i) setdest $xx $yy 0.0
+        $ns at $now "$n($i) setdest $xx $yy 500.0
     }
 
     $ns at [expr $now+$time] "destination"
