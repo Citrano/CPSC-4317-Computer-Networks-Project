@@ -1,25 +1,14 @@
-#Kaden Carter, Cody Citrano, Alejandro Figueroa - CPSC 4317 Computer Networks - Dr. Bo Sun
-#This Programming Script will demonstrate the simulation of a wired NS2.
-#PARAMETERS
-#Nodes: 60
-#Frame size: 1,000B
-#Traffic: CBR over UDP
-#Run Time: 100 seconds
-
-#AT THE MOMENT THIS IS BASICALLY A COPY OF "example1b.tcl" THAT IS PROVIDED IN THE VIRTUAL MACHINE
-#USING AS A BASE FOR THE WIRED SIMULATOR. WIRELESS LOOKS COMPLICATED.
-
 LanRouter set debug_ 0
 
 #Create simulator object
 set ns [new Simulator]
 
 #Open nam trace file
-set nf [open out.nam w]
+set nf [open wired_2.nam w]
 $ns namtrace-all $nf
 
 #Open tr trace file
-set tf [open out.tr w]
+set tf [open wired_2.tr w]
 $ns trace-all $tf
 
 #Finish procedure
@@ -31,12 +20,12 @@ proc finish {} {
     #Close the trace
     close $tf
     #Execute nam on the trace file
-    exec nam out.nam &
+    exec nam wired_2.nam &
     exit 0
 }
 
 #Nodes (wants 60 nodes from parameters)
-set node_number 60
+set node_number 16
 for {set i 0} {$i<$node_number} {incr i} {
     set n($i) [$ns node]
 }
@@ -46,26 +35,33 @@ for {set i 0} {$i < $node_number} {incr i} {
     set lan [$ns newLan "$n($i) $n([expr ($i+1)%7])" 1Mb 10ms LL Queue/DropTail MAC/Csma/Cd]
 }
 
-#UDP agent attachment
+#CBR over UDP traffic pair 1
 set udp0 [new Agent/UDP]
 $ns attach-agent $n(0) $udp0
-
-#CBR Traffic UDP attachment
 set cbr0 [new Application/Traffic/CBR]
 $cbr0 set packetSize_ 1000
 $cbr0 set interval_ 0.005
 $cbr0 attach-agent $udp0
-
-#Null agent
 set null0 [new Agent/Null]
-$ns attach-agent $n(59) $null0
-
-#Connect source with sink
+$ns attach-agent $n(15) $null0
 $ns connect $udp0 $null0
+
+#CBR over UDP traffic pair 2
+set udp1 [new Agent/UDP]
+$ns attach-agent $n(1) $udp1
+set cbr1 [new Application/Traffic/CBR]
+$cbr1 set packetSize_ 1000
+$cbr1 set interval_ 0.005
+$cbr1 attach-agent $udp1
+set null1 [new Agent/Null]
+$ns attach-agent $n(14) $null1
+$ns connect $udp1 $null1
 
 #Schedule Procedures
 $ns at 0.5 "$cbr0 start"
 $ns at 4.5 "$cbr0 stop"
+$ns at 0.5 "$cbr1 start"
+$ns at 4.5 "$cbr1 stop"
 
 #Call finish procedure - finish at 100 seconds (wants 100 seconds from parameters)
 $ns at 100.0 "finish"

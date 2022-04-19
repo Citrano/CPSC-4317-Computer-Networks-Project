@@ -6,33 +6,49 @@
 #Traffic: CBR over UDP
 #Run Time: 100 seconds
 
-#Define variables
-
+#------------------
+#Defining variables
+#------------------
+#Channel type
 set val(chan)       Channel/WirelessChannel
+#Radio-propagation model
 set val(prop)       Propagation/TwoRayGround
+#Network Inferface Type
 set val(netif)      Phy/WirelessPhy
+#MAC Type
 set val(mac)        Mac/802_11
+#Interface Queue Type
 set val(ifq)        Queue/DropTail/PriQueue
+#Link Layer Type
 set val(ll)         LL
+#Antenna Model
 set val(ant)        Antenna/OmniAntenna
+#Max Packet in ifq
 set val(ifqlen)     50
+#Number of Mobilenodes
 set val(nn)         60
+#Routing Protocol
 set val(rp)         DSDV
+#Size of window
 set val(x)          500
+#Size of window
 set val(y)          500
+#Allocated time
 set val(stop)       100
+#CBR traffic
 set val(traffic)    cbr
+#UDP traffic
 set val(traffic)    udp
 
 #Create simulator object
 set ns [new Simulator]
 
 #Open nam trace file
-set nf [open Wireless.nam w]
+set nf [open WirelessNam.nam w]
 $ns namtrace-all-wireless $nf $val(x) $val(y)
 
 #Open tr trace file
-set tf [open Out.tr w]
+set tf [open WirelessTrace.tr w]
 $ns trace-all $tf
 
 #Topography
@@ -71,21 +87,28 @@ for {set i 0} {$i < $val(nn)} {incr i} {
 #Stop procedure
 proc stop {} {
     global ns nf tf
+
     $ns flush-trace
+
     close $nf
     close $tf
+
     exec nam Wireless.nam &
 }
 
 #Random moving positions
 proc destination {} {
     global ns val n
+
     set time 1.0
+
     set now [$ns now]
+
     for {set i 0} {$i < $val(nn)} {incr i} {
         set xx [expr rand()*400]
         set yy [expr rand()*250]
-        $ns at $now "$n($i) setdest $xx $yy 0.0
+        
+        $ns at $now "$n($i) setdest $xx $yy 500.0
     }
 
     $ns at [expr $now+$time] "destination"
