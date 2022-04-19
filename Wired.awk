@@ -2,17 +2,17 @@
     event = $1;
     time = $2;
     node_id = $3;
-    pkt_size = $8;
+    pkt_size = $6;
     level = $4;
 
-    if (level == "AGT" && event == "s" && $7 == "cbr") {
-        sent++
+    if (event == "h" && $5 == "cbr") {
+        sent++;
         if (!startTime || (time < startTime)) {
-            startTime = time
+            startTime = time;
         }
     }
 
-    if (level == "AGT" && event == "r" && $7 == "cbr") {
+    if (event == "r" && $5 == "cbr") {
         receive++;
         if (time > stopTime) {
             stopTime = time;
@@ -22,8 +22,7 @@
 }
 
 END{
-    printf("sent_packets\t %d\n",sent)
-    printf("received_packets %d\n",receive)
-    printf("PDR %.2f%\n",(receive/sent)*100);
-    printf("Average Throughput[kbps] = %.2f\tStartTime=%.2f\tStopTime = %.2f\n", (recvdSize/(stopTime-startTime))*(8/1000),startTime,stopTime);
+    printf("sent_packets\t %d\n",sent);
+    printf("received_packets %d\n",receive);
+    printf("Average Throughput[bps] = %.2f\tStartTime=%.2f\tStopTime = %.2f\n", ((recvdSize*8)/(stopTime-startTime)),startTime,stopTime);
 }
