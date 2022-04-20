@@ -4,11 +4,11 @@ LanRouter set debug_ 0
 set ns [new Simulator]
 
 #Open nam trace file
-set nf [open wired_4.nam w]
+set nf [open wired_8.nam w]
 $ns namtrace-all $nf
 
 #Open tr trace file
-set tf [open wired_4.tr w]
+set tf [open wired_8.tr w]
 $ns trace-all $tf
 
 #Finish procedure
@@ -20,12 +20,12 @@ proc finish {} {
     #Close the trace
     close $tf
     #Execute nam on the trace file
-    exec nam wired_4.nam &
+    exec nam wired_8.nam &
     exit 0
 }
 
 #Nodes (wants 60 nodes from parameters)
-set node_number 16
+set node_number 64
 for {set i 0} {$i<$node_number} {incr i} {
     set n($i) [$ns node]
 }
@@ -43,7 +43,7 @@ $cbr0 set packetSize_ 1000
 $cbr0 set interval_ 0.005
 $cbr0 attach-agent $udp0
 set null0 [new Agent/Null]
-$ns attach-agent $n(15) $null0
+$ns attach-agent $n(63) $null0
 $ns connect $udp0 $null0
 
 #CBR over UDP traffic pair 2
@@ -54,7 +54,7 @@ $cbr1 set packetSize_ 1000
 $cbr1 set interval_ 0.005
 $cbr1 attach-agent $udp1
 set null1 [new Agent/Null]
-$ns attach-agent $n(14) $null1
+$ns attach-agent $n(62) $null1
 $ns connect $udp1 $null1
 
 #CBR over UDP traffic pair 3
@@ -65,7 +65,7 @@ $cbr2 set packetSize_ 1000
 $cbr2 set interval_ 0.005
 $cbr2 attach-agent $udp2
 set null2 [new Agent/Null]
-$ns attach-agent $n(13) $null2
+$ns attach-agent $n(61) $null2
 $ns connect $udp2 $null2
 
 #CBR over UDP traffic pair 4
@@ -76,7 +76,7 @@ $cbr3 set packetSize_ 1000
 $cbr3 set interval_ 0.005
 $cbr3 attach-agent $udp3
 set null3 [new Agent/Null]
-$ns attach-agent $n(12) $null3
+$ns attach-agent $n(60) $null3
 $ns connect $udp3 $null3
 
 #CBR over UDP traffic pair 5
@@ -87,7 +87,7 @@ $cbr4 set packetSize_ 1000
 $cbr4 set interval_ 0.005
 $cbr4 attach-agent $udp4
 set null0 [new Agent/Null]
-$ns attach-agent $n(11) $null4
+$ns attach-agent $n(59) $null4
 $ns connect $udp4 $null4
 
 #CBR over UDP traffic pair 6
@@ -98,7 +98,7 @@ $cbr5 set packetSize_ 1000
 $cbr5 set interval_ 0.005
 $cbr5 attach-agent $udp5
 set null1 [new Agent/Null]
-$ns attach-agent $n(10) $null5
+$ns attach-agent $n(58) $null5
 $ns connect $udp5 $null5
 
 #CBR over UDP traffic pair 7
@@ -109,7 +109,7 @@ $cbr6 set packetSize_ 1000
 $cbr6 set interval_ 0.005
 $cbr6 attach-agent $udp6
 set null6 [new Agent/Null]
-$ns attach-agent $n(9) $null6
+$ns attach-agent $n(57) $null6
 $ns connect $udp6 $null6
 
 #CBR over UDP traffic pair 8
@@ -120,7 +120,7 @@ $cbr7 set packetSize_ 1000
 $cbr7 set interval_ 0.005
 $cbr7 attach-agent $udp7
 set null7 [new Agent/Null]
-$ns attach-agent $n(8) $null7
+$ns attach-agent $n(56) $null7
 $ns connect $udp7 $null7
 
 #Schedule Procedures

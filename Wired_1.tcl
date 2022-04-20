@@ -25,7 +25,7 @@ proc finish {} {
 }
 
 #Nodes (wants 60 nodes from parameters)
-set node_number 16
+set node_number 64
 for {set i 0} {$i<$node_number} {incr i} {
     set n($i) [$ns node]
 }
@@ -43,7 +43,7 @@ $cbr0 set packetSize_ 1000
 $cbr0 set interval_ 0.005
 $cbr0 attach-agent $udp0
 set null0 [new Agent/Null]
-$ns attach-agent $n(15) $null0
+$ns attach-agent $n(63) $null0
 $ns connect $udp0 $null0
 
 #Schedule Procedures
