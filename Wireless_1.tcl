@@ -44,64 +44,40 @@ $ns node-config -adhocRouting $val(rp) \
   -movementTrace ON \
   -channel $channel1 
 
-set n0 [$ns node]
-set n1 [$ns node]
-set n2 [$ns node]
-set n3 [$ns node]
-set n4 [$ns node]
-set n5 [$ns node]
+for {set i 0} {$i<val(nn)} {incr i} {
+    set n($i) [$ns node]
+}
 
-$n0 random-motion 0
-$n1 random-motion 0
-$n2 random-motion 0
-$n3 random-motion 0
-$n4 random-motion 0
-$n5 random-motion 0
+for {set i 0} {$i<val(nn)} {incr i} {
+    $ns initial_node_pos $n(i) 20
+    $n(i) random-motion 0
+}
 
-$ns initial_node_pos $n0 20
-$ns initial_node_pos $n1 20
-$ns initial_node_pos $n2 20
-$ns initial_node_pos $n3 20
-$ns initial_node_pos $n4 20
-$ns initial_node_pos $n5 50
+for {set i 0} {$i<val(nn)} {incr i} {
+    set xx [expr rand()*500]
+    set yy [expr rand()*500]
 
-$n0 set X_ 10.0
-$n0 set Y_ 20.0
-$n0 set Z_ 0.0
+    $n(i) set X_ xx
+    $n(i) set Y_ yy
+    $n(i) set Z_ 0.0
+}
 
-$n1 set X_ 210.0
-$n1 set Y_ 230.0
-$n1 set Z_ 0.0
-
-$n2 set X_ 100.0
-$n2 set Y_ 200.0
-$n2 set Z_ 0.0
-
-$n3 set X_ 150.0
-$n3 set Y_ 230.0
-$n3 set Z_ 0.0
-
-$n4 set X_ 430.0
-$n4 set Y_ 320.0
-$n4 set Z_ 0.0
-
-$n5 set X_ 270.0
-$n5 set Y_ 120.0
-$n5 set Z_ 0.0
-
-$ns at 1.0 "$n1 setdest 490.0 340.0 25.0"
-$ns at 1.0 "$n4 setdest 300.0 130.0 5.0"
-$ns at 1.0 "$n5 setdest 190.0 440.0 15.0"
-
-$ns at 20.0 "$n5 setdest 100.0 200.0 30.0"
+for {set i 0} {$i<val(nn)} {incr i} {
+    set xx [expr rand()*500]
+    set yy [expr rand()*500]
+    set zz [expr rand()*30]
+    $ns at 1.0 "$n(i) setdest xx yy zz"
+}
 
 set udp0 [new Agent/UDP]
-set null0 [new Agent/Null]
-$ns attach-agent $n2 $udp0
-$ns attach-agent $n3 $null0
-$ns connect $udp0 $null0
+$ns attach-agent $n(0) $udp0
 set cbr0 [new Application/Traffic/CBR]
+$cbr0 set packetSize_ 1000
+$cbr0 set interval_ 0.005
 $cbr0 attach-agent $udp0
+set null0 [new Agent/Null]
+$ns attach-agent $n(5) $null0
+$ns connect $udp0 $null0
 
 $ns at 0.5 "$cbr0 start"
 $ns at 4.5 "$cbr0 stop"
