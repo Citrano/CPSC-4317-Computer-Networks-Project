@@ -142,7 +142,7 @@ proc finish {} {
     close $namfile
 
     #Execute nam on the trace file
-    exec nam wireless_1.nam &
+    exec nam wireless_2.nam &
 
     exit 0
 }
