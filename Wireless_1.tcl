@@ -44,16 +44,13 @@ $ns node-config -adhocRouting $val(rp) \
   -movementTrace ON \
   -channel $channel1 
 
-for {set i 0} {$i<val(nn)} {incr i} {
+for {set i 0} {$i<$val(nn)} {incr i} {
     set n($i) [$ns node]
+    $ns initial_node_pos $n($i) 20
+    $n($i) random-motion 0
 }
 
-for {set i 0} {$i<val(nn)} {incr i} {
-    $ns initial_node_pos $n(i) 20
-    $n(i) random-motion 0
-}
-
-for {set i 0} {$i<val(nn)} {incr i} {
+for {set i 0} {$i<$val(nn)} {incr i} {
     set xx [expr rand()*500]
     set yy [expr rand()*500]
 
@@ -62,11 +59,11 @@ for {set i 0} {$i<val(nn)} {incr i} {
     $n(i) set Z_ 0.0
 }
 
-for {set i 0} {$i<val(nn)} {incr i} {
-    set xx [expr rand()*500]
-    set yy [expr rand()*500]
-    set zz [expr rand()*30]
-    $ns at 1.0 "$n(i) setdest xx yy zz"
+for {set i 0} {$i<$val(nn)} {incr i} {
+    set xx [expr rand()*450]
+    set yy [expr rand()*450]
+
+    $ns at 1.0 "$n($i) setdest xx yy 15.0"
 }
 
 set udp0 [new Agent/UDP]
