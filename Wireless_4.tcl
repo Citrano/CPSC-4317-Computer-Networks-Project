@@ -1,5 +1,5 @@
 #Kaden Carter, Cody Citrano, Alejandro Figueroa - CPSC 4317 Computer Networks - Dr. Bo Sun
-#This Programming Script will demonstrate the simulation of a wireless NS2.
+#This Programming Script will demonstrate the simulation of a wireless NS2. While running 64 nodes using 4 traffic pair.
 #PARAMETERS
 #Nodes: 60
 #Frame size: 1,000B
