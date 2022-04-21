@@ -1,27 +1,29 @@
 #Alex: found this to be the very basic structure for awk.
-
-BEGIN {
-    stime=0
-    ftime=0
-    flag=0
-    fsize=0
-    throughput=0
-    latency=0
-}
-
 {
-    if($1=="r"&&$4==59) {
-        fsize+=$6
-        if(flag==0) {
-            stime=$2
-            flag=1
+    event = $1;
+    time = $2;
+    node_id = $3;
+    pkt_size = $8;
+    level = $4;
+
+    if (event == "s") {
+        sent++;
+        if (!startTime || (time < startTime)) {
+            startTime = time;
         }
-        ftime=$2
+    }
+
+    if (event == "r") {
+        receive++;
+        if (time > stopTime) {
+            stopTime = time;
+        }
+        recvdSize += pkt_size;
     }
 }
 
-END {
-    latency=ftime-stime
-    throughput=(fsize*8)/latency
-    printf("\N Throughput : %f",throughput)
+END{
+    printf("sent_packets\t %d\n",sent);
+    printf("received_packets %d\n",receive);
+    printf("Average Throughput[bps] = %.2f\tStartTime=%.2f\tStopTime = %.2f\n", ((recvdSize*8)/(stopTime-startTime)),startTime,stopTime);
 }
