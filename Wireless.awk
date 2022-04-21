@@ -13,14 +13,14 @@
     pkt_size = $8;
     level = $4;
 
-    if (event == "s") {
+    if (event == "s" && level == "AGT") {
         sent++;
         if (!startTime || (time < startTime)) {
             startTime = time;
         }
     }
 
-    if (event == "r") {
+    if (event == "r" && level == "AGT") {
         receive++;
         if (time > stopTime) {
             stopTime = time;
