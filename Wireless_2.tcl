@@ -98,7 +98,7 @@ for {set i 0} {$i < $val(nn)} {incr i} {
         $ns at 1.0 "$n($i) setdest $xx $yy 150.0"
 }
 
-#CBR over UDP traffic pair
+#CBR over UDP traffic pair 1
 set udp0 [new Agent/UDP]
 $ns attach-agent $n(0) $udp0
 set cbr0 [new Application/Traffic/CBR]
@@ -109,9 +109,22 @@ set null0 [new Agent/Null]
 $ns attach-agent $n(63) $null0
 $ns connect $udp0 $null0
 
+#CBR over UDP traffic pair 2
+set udp1 [new Agent/UDP]
+$ns attach-agent $n(1) $udp1
+set cbr1 [new Application/Traffic/CBR]
+$cbr1 set packetSize_ 1000
+$cbr1 set interval_ 0.005
+$cbr1 attach-agent $udp1
+set null1 [new Agent/Null]
+$ns attach-agent $n(62) $null1
+$ns connect $udp1 $null1
+
 #Schedule Procedures
 $ns at 0.5 "$cbr0 start"
 $ns at 4.5 "$cbr0 stop"
+$ns at 0.5 "$cbr1 start"
+$ns at 4.5 "$cbr1 stop"
 
 #Call finish procedure - finish at 100 seconds (wants 100 seconds from parameters)
 $ns at 100.0 "finish"
@@ -119,7 +132,7 @@ $ns at 100.0 "finish"
 #Finish procedure
 proc finish {} {
     global ns tracefile namfile
-
+    
     $ns flush-trace
 
     #Close the trace

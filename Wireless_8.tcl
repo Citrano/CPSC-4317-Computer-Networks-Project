@@ -98,7 +98,7 @@ for {set i 0} {$i < $val(nn)} {incr i} {
         $ns at 1.0 "$n($i) setdest $xx $yy 150.0"
 }
 
-#CBR over UDP traffic pair
+#CBR over UDP traffic pair 1
 set udp0 [new Agent/UDP]
 $ns attach-agent $n(0) $udp0
 set cbr0 [new Application/Traffic/CBR]
@@ -109,9 +109,100 @@ set null0 [new Agent/Null]
 $ns attach-agent $n(63) $null0
 $ns connect $udp0 $null0
 
+#CBR over UDP traffic pair 2
+set udp1 [new Agent/UDP]
+$ns attach-agent $n(1) $udp1
+set cbr1 [new Application/Traffic/CBR]
+$cbr1 set packetSize_ 1000
+$cbr1 set interval_ 0.005
+$cbr1 attach-agent $udp1
+set null1 [new Agent/Null]
+$ns attach-agent $n(62) $null1
+$ns connect $udp1 $null1
+
+#CBR over UDP traffic pair 3
+set udp2 [new Agent/UDP]
+$ns attach-agent $n(2) $udp2
+set cbr2 [new Application/Traffic/CBR]
+$cbr2 set packetSize_ 1000
+$cbr2 set interval_ 0.005
+$cbr2 attach-agent $udp2
+set null2 [new Agent/Null]
+$ns attach-agent $n(61) $null2
+$ns connect $udp2 $null2
+
+#CBR over UDP traffic pair 4
+set udp3 [new Agent/UDP]
+$ns attach-agent $n(3) $udp3
+set cbr3 [new Application/Traffic/CBR]
+$cbr3 set packetSize_ 1000
+$cbr3 set interval_ 0.005
+$cbr3 attach-agent $udp3
+set null3 [new Agent/Null]
+$ns attach-agent $n(60) $null3
+$ns connect $udp3 $null3
+
+#CBR over UDP traffic pair 5
+set udp4 [new Agent/UDP]
+$ns attach-agent $n(4) $udp4
+set cbr4 [new Application/Traffic/CBR]
+$cbr4 set packetSize_ 1000
+$cbr4 set interval_ 0.005
+$cbr4 attach-agent $udp4
+set null4 [new Agent/Null]
+$ns attach-agent $n(59) $null4
+$ns connect $udp4 $null4
+
+#CBR over UDP traffic pair 6
+set udp5 [new Agent/UDP]
+$ns attach-agent $n(5) $udp5
+set cbr5 [new Application/Traffic/CBR]
+$cbr5 set packetSize_ 1000
+$cbr5 set interval_ 0.005
+$cbr5 attach-agent $udp5
+set null5 [new Agent/Null]
+$ns attach-agent $n(58) $null5
+$ns connect $udp5 $null5
+
+#CBR over UDP traffic pair 7
+set udp6 [new Agent/UDP]
+$ns attach-agent $n(6) $udp6
+set cbr6 [new Application/Traffic/CBR]
+$cbr6 set packetSize_ 1000
+$cbr6 set interval_ 0.005
+$cbr6 attach-agent $udp6
+set null6 [new Agent/Null]
+$ns attach-agent $n(57) $null6
+$ns connect $udp6 $null6
+
+#CBR over UDP traffic pair 8
+set udp7 [new Agent/UDP]
+$ns attach-agent $n(7) $udp7
+set cbr7 [new Application/Traffic/CBR]
+$cbr7 set packetSize_ 1000
+$cbr7 set interval_ 0.005
+$cbr7 attach-agent $udp7
+set null7 [new Agent/Null]
+$ns attach-agent $n(56) $null7
+$ns connect $udp7 $null7
+
 #Schedule Procedures
 $ns at 0.5 "$cbr0 start"
 $ns at 4.5 "$cbr0 stop"
+$ns at 0.5 "$cbr1 start"
+$ns at 4.5 "$cbr1 stop"
+$ns at 0.5 "$cbr2 start"
+$ns at 4.5 "$cbr2 stop"
+$ns at 0.5 "$cbr3 start"
+$ns at 4.5 "$cbr3 stop"
+$ns at 0.5 "$cbr4 start"
+$ns at 4.5 "$cbr4 stop"
+$ns at 0.5 "$cbr5 start"
+$ns at 4.5 "$cbr5 stop"
+$ns at 0.5 "$cbr6 start"
+$ns at 4.5 "$cbr6 stop"
+$ns at 0.5 "$cbr7 start"
+$ns at 4.5 "$cbr7 stop"
 
 #Call finish procedure - finish at 100 seconds (wants 100 seconds from parameters)
 $ns at 100.0 "finish"
@@ -119,7 +210,7 @@ $ns at 100.0 "finish"
 #Finish procedure
 proc finish {} {
     global ns tracefile namfile
-
+    
     $ns flush-trace
 
     #Close the trace
