@@ -81,7 +81,7 @@ $ns at 4.5 "$cbr0 stop"
 
 $ns at 100.0 "finish"
 
-proc finish () {
+proc finish {} {
     global ns tracefile namfile
     $ns flush-trace
     close $tracefile
