@@ -54,9 +54,9 @@ for {set i 0} {$i<$val(nn)} {incr i} {
     set xx [expr rand()*500]
     set yy [expr rand()*500]
 
-    $n(i) set X_ xx
-    $n(i) set Y_ yy
-    $n(i) set Z_ 0.0
+    $n($i) set X_ xx
+    $n($i) set Y_ yy
+    $n($i) set Z_ 0.0
 }
 
 for {set i 0} {$i<$val(nn)} {incr i} {
