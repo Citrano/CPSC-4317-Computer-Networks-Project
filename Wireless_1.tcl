@@ -59,6 +59,13 @@ for {set i 0} {$i<$val(nn)} {incr i} {
     $n($i) set Z_ 0.0
 }
 
+for {set i 0} {$i < $val(nn)} {incr i} {
+        set xx [expr rand()*450]
+        set yy [expr rand()*450]
+        
+        $ns at $1.0 "$n($i) setdest $xx $yy 15.0
+    }
+
 set udp0 [new Agent/UDP]
 $ns attach-agent $n(0) $udp0
 set cbr0 [new Application/Traffic/CBR]
