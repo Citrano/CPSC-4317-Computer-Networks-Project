@@ -11,8 +11,6 @@ set val(nn)     6
 set val(rp)     AODV
 set val(x)      500
 set val(y)      500
-set val(cp)     "../mobility/scene/cbr-3-test"
-set val(sc)     "../mobility/scene/scen-3-test"
 
 set ns [new Simulator]
 
@@ -45,12 +43,6 @@ $ns node-config -adhocRouting $val(rp) \
   -routerTrace ON \
   -movementTrace ON \
   -channel $channel1
-
-puts "Loading connection pattern..."
-source $val(cp)
-
-puts "Loading scenario file..."
-source $val(sc)
 
 for {set i 0} {$i<$val(nn)} {incr i} {
     set n($i) [$ns node]
