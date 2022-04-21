@@ -17,7 +17,7 @@ set ns [new Simulator]
 set tracefile [open wireless_1.tr w]
 $ns trace-all $tracefile
 
-set namfile [open wireless.nam w]
+set namfile [open wireless_1.nam w]
 $ns namtrace-all-wireless $namfile $val(x) $val(y)
 
 set topo [new Topography]
@@ -103,8 +103,8 @@ $ns connect $udp0 $null0
 set cbr0 [new Application/Traffic/CBR]
 $cbr0 attach-agent $udp0
 
-$ns at 0.5 "$cbr start"
-$ns at 4.5 "$cbr stop"
+$ns at 0.5 "$cbr0 start"
+$ns at 4.5 "$cbr0 stop"
 
 $ns at 100.0 "finish"
 
@@ -113,7 +113,7 @@ proc finish () {
     $ns flush-trace
     close $tracefile
     close $namfile
-    exec nam wired_2.nam &
+    exec nam wireless_1.nam &
     exit 0
 }
 
