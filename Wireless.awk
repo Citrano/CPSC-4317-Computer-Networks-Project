@@ -1,4 +1,11 @@
-#Alex: found this to be the very basic structure for awk.
+#Kaden Carter, Cody Citrano, Alejandro Figueroa - CPSC 4317 Computer Networks - Dr. Bo Sun
+#This Programming Script will calculate the throughput of the tcl files.
+#PARAMETERS
+#Nodes: 60
+#Frame size: 1,000B
+#Traffic: CBR over UDP
+#Run Time: 100 seconds
+
 {
     event = $1;
     time = $2;
