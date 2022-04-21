@@ -1,3 +1,11 @@
+#Kaden Carter, Cody Citrano, Alejandro Figueroa - CPSC 4317 Computer Networks - Dr. Bo Sun
+#This Programming Script will demonstrate the simulation of a wired NS2. While running 64 nodes using 1 traffic pair.
+#PARAMETERS
+#Nodes: 60 (We tested it with 24 and 64 nodes. We decided to leave it at 64 to match traffic pairs.)
+#Frame size: 1,000B
+#Traffic: CBR over UDP
+#Run Time: 100 seconds
+
 LanRouter set debug_ 0
 
 #Create simulator object
