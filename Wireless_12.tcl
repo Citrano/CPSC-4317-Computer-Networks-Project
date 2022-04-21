@@ -38,11 +38,11 @@ set val(y)      500
 set ns [new Simulator]
 
 #Open tr trace file
-set tracefile [open wireless_1.tr w]
+set tracefile [open wireless_12.tr w]
 $ns trace-all $tracefile
 
 #Open nam trace file
-set namfile [open wireless_1.nam w]
+set namfile [open wireless_12.nam w]
 $ns namtrace-all-wireless $namfile $val(x) $val(y)
 
 #Topography
@@ -95,7 +95,7 @@ for {set i 0} {$i < $val(nn)} {incr i} {
         set xx [expr rand()*450]
         set yy [expr rand()*450]
         
-        $ns at 1.0 "$n($i) setdest $xx $yy 150.0"
+        $ns at 1.0 "$n($i) setdest $xx $yy 500.0"
 }
 
 #CBR over UDP traffic pair 1

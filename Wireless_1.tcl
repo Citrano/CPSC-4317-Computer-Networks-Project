@@ -95,7 +95,7 @@ for {set i 0} {$i < $val(nn)} {incr i} {
         set xx [expr rand()*450]
         set yy [expr rand()*450]
         
-        $ns at 1.0 "$n($i) setdest $xx $yy 150.0"
+        $ns at 1.0 "$n($i) setdest $xx $yy 500.0"
 }
 
 #CBR over UDP traffic pair
